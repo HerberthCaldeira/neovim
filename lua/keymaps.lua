@@ -1,5 +1,6 @@
 local ok_wk,  wk  = pcall(require, "which-key")
 local ok_tel, tel = pcall(require, "telescope.builtin")
+local ok_hp,  hp  = pcall(require, "harpoon")
 
 -- Grupos do which-key
 if ok_wk then
@@ -7,6 +8,8 @@ if ok_wk then
     { "<leader>f", group = "Find" },
     { "<leader>l", group = "LSP" },
     { "<leader>d", group = "Diagnostics" },
+    { "<leader>h", group = "Harpoon" },
+    { "<leader>g", group = "Git" },
   })
 end
 
@@ -58,6 +61,19 @@ vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Janela esquerda" })
 vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Janela direita" })
 vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Janela abaixo" })
 vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Janela acima" })
+
+-- Git
+vim.keymap.set("n", "<leader>gg", "<cmd>LazyGit<cr>", { desc = "LazyGit" })
+
+-- Harpoon
+if ok_hp then
+  vim.keymap.set("n", "<leader>ha", function() hp:list():add() end,                        { desc = "Add file" })
+  vim.keymap.set("n", "<leader>hm", function() hp.ui:toggle_quick_menu(hp:list()) end,     { desc = "Menu" })
+  vim.keymap.set("n", "<leader>h1", function() hp:list():select(1) end,                    { desc = "Arquivo 1" })
+  vim.keymap.set("n", "<leader>h2", function() hp:list():select(2) end,                    { desc = "Arquivo 2" })
+  vim.keymap.set("n", "<leader>h3", function() hp:list():select(3) end,                    { desc = "Arquivo 3" })
+  vim.keymap.set("n", "<leader>h4", function() hp:list():select(4) end,                    { desc = "Arquivo 4" })
+end
 
 -- Buffers
 vim.keymap.set("n", "<S-l>", "<cmd>bnext<cr>",     { desc = "Buffer próximo" })

@@ -14,6 +14,7 @@ mkdir -p "$PACK_DIR"
 
 clone() {
   local repo=$1
+  local branch=${2:-}
   local name
   name=$(basename "$repo")
   local dest="$PACK_DIR/$name"
@@ -27,7 +28,11 @@ clone() {
     fi
   else
     echo "Installing $name..."
-    git clone --depth=1 "https://github.com/$repo" "$dest"
+    if [ -n "$branch" ]; then
+      git clone --depth=1 --branch "$branch" "https://github.com/$repo" "$dest"
+    else
+      git clone --depth=1 "https://github.com/$repo" "$dest"
+    fi
   fi
 }
 
@@ -42,6 +47,9 @@ clone "saadparwaiz1/cmp_luasnip"
 clone "nvim-lua/plenary.nvim"
 clone "nvim-telescope/telescope.nvim"
 clone "folke/which-key.nvim"
+clone "ThePrimeagen/harpoon" "harpoon2"
+clone "kdheepak/lazygit.nvim"
+clone "lewis6991/gitsigns.nvim"
 
 echo ""
 echo "Plugins instalados em $PACK_DIR"
