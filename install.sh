@@ -2,20 +2,36 @@
 set -e
 
 PACK_DIR="$HOME/.config/nvim/pack/plugins/start"
+UPDATE=false
+
+for arg in "$@"; do
+  case $arg in
+    --update) UPDATE=true ;;
+  esac
+done
+
 mkdir -p "$PACK_DIR"
 
 clone() {
   local repo=$1
   local name
   name=$(basename "$repo")
-  if [ ! -d "$PACK_DIR/$name" ]; then
-    echo "Installing $name..."
-    git clone --depth=1 "https://github.com/$repo" "$PACK_DIR/$name"
+  local dest="$PACK_DIR/$name"
+
+  if [ -d "$dest" ]; then
+    if $UPDATE; then
+      echo "Updating $name..."
+      git -C "$dest" pull --ff-only
+    else
+      echo "$name already installed, skipping"
+    fi
   else
-    echo "$name already installed, skipping"
+    echo "Installing $name..."
+    git clone --depth=1 "https://github.com/$repo" "$dest"
   fi
 }
 
+clone "folke/tokyonight.nvim"
 clone "nvim-treesitter/nvim-treesitter"
 clone "hrsh7th/nvim-cmp"
 clone "hrsh7th/cmp-nvim-lsp"
