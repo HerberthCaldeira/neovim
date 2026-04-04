@@ -33,8 +33,8 @@ opt.swapfile    = false
 vim.g.mapleader      = " "
 vim.g.maplocalleader = " "
 
--- Auto save ao sair do modo insert
-vim.api.nvim_create_autocmd("InsertLeave", {
+-- Auto save ao sair do modo insert ou ao alterar no modo normal
+vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
   pattern = "*",
   command = "silent! write",
 })

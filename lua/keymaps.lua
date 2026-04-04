@@ -63,7 +63,8 @@ vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Janela abaixo" })
 vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Janela acima" })
 
 -- Git
-vim.keymap.set("n", "<leader>gg", "<cmd>LazyGit<cr>", { desc = "LazyGit" })
+vim.keymap.set("n", "<leader>gg", "<cmd>LazyGit<cr>",    { desc = "LazyGit" })
+vim.keymap.set("n", "<leader>D",  "<cmd>Lazydocker<cr>", { desc = "LazyDocker" })
 
 -- Harpoon
 if ok_hp then
