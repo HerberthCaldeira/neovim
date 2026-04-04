@@ -24,6 +24,22 @@ vim.lsp.config("bashls", {
 })
 vim.lsp.enable("bashls")
 
+-- PHP (requer: composer global require phpactor/phpactor)
+vim.lsp.config("phpactor", {
+  cmd          = { "phpactor", "language-server" },
+  filetypes    = { "php" },
+  root_markers = { "composer.json", ".git" },
+})
+vim.lsp.enable("phpactor")
+
+-- JavaScript / TypeScript (requer: npm install -g typescript-language-server typescript)
+vim.lsp.config("ts_ls", {
+  cmd          = { "typescript-language-server", "--stdio" },
+  filetypes    = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+  root_markers = { "package.json", "tsconfig.json", "jsconfig.json", ".git" },
+})
+vim.lsp.enable("ts_ls")
+
 -- Diagnósticos
 vim.diagnostic.config({
   virtual_text    = true,
@@ -55,7 +71,14 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 })
 
 vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern  = "*.sh",
+  pattern  = { "*.sh" },
+  callback = function()
+    vim.lsp.buf.format({ async = false })
+  end,
+})
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern  = { "*.php", "*.js", "*.jsx", "*.ts", "*.tsx" },
   callback = function()
     vim.lsp.buf.format({ async = false })
   end,
