@@ -10,8 +10,12 @@ if ok_wk then
     { "<leader>d", group = "Diagnostics" },
     { "<leader>h", group = "Harpoon" },
     { "<leader>g", group = "Git" },
+    { "<leader>r", group = "HTTP" },
   })
 end
+
+vim.keymap.set("n", "<leader>?", "<cmd>WhichKey<cr>", { desc = "Todos os keymaps" })
+vim.keymap.set("n", "<leader>C", "<cmd>e ~/.config/nvim/cheatsheet.md<cr>", { desc = "Cheatsheet" })
 
 -- Telescope / Find
 if ok_tel then
@@ -61,6 +65,12 @@ vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Janela esquerda" })
 vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Janela direita" })
 vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Janela abaixo" })
 vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Janela acima" })
+
+-- HTTP (httpyac)
+vim.keymap.set("n", "<leader>rr", "<cmd>NvimHttpYac<cr>",      { desc = "Run request" })
+vim.keymap.set("n", "<leader>ra", "<cmd>NvimHttpYacAll<cr>",   { desc = "Run all" })
+vim.keymap.set("n", "<leader>rp", "<cmd>NvimHttpYacPicker<cr>",{ desc = "Pick request" })
+vim.keymap.set("n", "<leader>re", "<cmd>NvimHttpYacEnv<cr>",   { desc = "Select env" })
 
 -- Git
 vim.keymap.set("n", "<leader>gg", "<cmd>LazyGit<cr>",    { desc = "LazyGit" })
