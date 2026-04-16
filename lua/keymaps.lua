@@ -87,6 +87,70 @@ if ok_hp then
   vim.keymap.set("n", "<leader>h4", function() hp:list():select(4) end,                    { desc = "Arquivo 4" })
 end
 
+-- DAP
+local ok_dap, dap = pcall(require, "dap")
+if ok_dap then
+  if ok_wk then
+    wk.add({ { "<leader>b", group = "Debug" } })
+  end
+
+  vim.keymap.set("n", "<F5>",  dap.continue,          { desc = "DAP: continue" })
+  vim.keymap.set("n", "<F10>", dap.step_over,          { desc = "DAP: step over" })
+  vim.keymap.set("n", "<F11>", dap.step_into,          { desc = "DAP: step into" })
+  vim.keymap.set("n", "<F12>", dap.step_out,           { desc = "DAP: step out" })
+  vim.keymap.set("n", "<leader>bb", dap.toggle_breakpoint,                                          { desc = "Toggle breakpoint" })
+  vim.keymap.set("n", "<leader>bB", function() dap.set_breakpoint(vim.fn.input("Condição: ")) end, { desc = "Breakpoint condicional" })
+  vim.keymap.set("n", "<leader>br", dap.restart,       { desc = "Restart" })
+  vim.keymap.set("n", "<leader>bq", dap.terminate,     { desc = "Terminar" })
+  vim.keymap.set("n", "<leader>bc", dap.run_to_cursor, { desc = "Run to cursor" })
+
+  local ok_view, dapview = pcall(require, "dap-view")
+  if ok_view then
+    vim.keymap.set("n", "<leader>bv", dapview.toggle, { desc = "Toggle view" })
+  end
+
+  vim.keymap.set("n", "<leader>b?", function()
+    local lines = {
+      "  Debug — atalhos  ",
+      "─────────────────────────────────────",
+      " <F5>        Continuar / iniciar",
+      " <F10>       Step over",
+      " <F11>       Step into",
+      " <F12>       Step out",
+      "─────────────────────────────────────",
+      " <leader>bb  Toggle breakpoint",
+      " <leader>bB  Breakpoint condicional",
+      " <leader>bc  Run to cursor",
+      "─────────────────────────────────────",
+      " <leader>br  Restart",
+      " <leader>bq  Terminar sessão",
+      " <leader>bv  Toggle painel",
+      "─────────────────────────────────────",
+      "  q / <Esc>  Fechar",
+    }
+    local buf = vim.api.nvim_create_buf(false, true)
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+    vim.bo[buf].modifiable = false
+    local width = 39
+    local height = #lines
+    local win = vim.api.nvim_open_win(buf, true, {
+      relative = "editor",
+      row = math.floor((vim.o.lines - height) / 2),
+      col = math.floor((vim.o.columns - width) / 2),
+      width = width,
+      height = height,
+      style = "minimal",
+      border = "rounded",
+      title = " Debug ",
+      title_pos = "center",
+    })
+    vim.wo[win].cursorline = false
+    for _, key in ipairs({ "q", "<Esc>" }) do
+      vim.keymap.set("n", key, "<cmd>close<cr>", { buffer = buf, nowait = true })
+    end
+  end, { desc = "Colinha de debug" })
+end
+
 -- Neotest
 local ok_nt, nt = pcall(require, "neotest")
 if ok_nt then

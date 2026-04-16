@@ -55,6 +55,35 @@ clone "nvim-tree/nvim-web-devicons"
 clone "MeanderingProgrammer/render-markdown.nvim"
 clone "abidibo/nvim-httpyac"
 
+# DAP (debugger)
+clone "mfussenegger/nvim-dap"
+clone "igorlfs/nvim-dap-view"
+clone "leoluz/nvim-dap-go"
+
+# PHP debug adapter (Xdebug) — baixa o .vsix do GitHub e extrai
+PHP_DAP_DIR="$HOME/.local/share/nvim/dap/php-debug"
+install_php_dap() {
+  echo "Installing php-debug-adapter..."
+  local vsix
+  vsix=$(curl -s https://api.github.com/repos/xdebug/vscode-php-debug/releases/latest \
+    | grep '"browser_download_url"' | grep '\.vsix' | cut -d'"' -f4)
+  mkdir -p "$PHP_DAP_DIR"
+  curl -L "$vsix" -o /tmp/php-debug.vsix
+  unzip -o /tmp/php-debug.vsix -d "$PHP_DAP_DIR" > /dev/null
+  rm /tmp/php-debug.vsix
+  echo "php-debug-adapter installed"
+}
+
+if [ ! -f "$PHP_DAP_DIR/extension/out/phpDebug.js" ]; then
+  install_php_dap
+else
+  if $UPDATE; then
+    install_php_dap
+  else
+    echo "php-debug-adapter already installed, skipping"
+  fi
+fi
+
 # Neotest + adapters
 clone "nvim-neotest/nvim-nio"
 clone "nvim-neotest/neotest"
