@@ -11,6 +11,7 @@ if ok_wk then
     { "<leader>h", group = "Harpoon" },
     { "<leader>g", group = "Git" },
     { "<leader>r", group = "HTTP" },
+    { "<leader>t", group = "Testes" },
   })
 end
 
@@ -84,6 +85,20 @@ if ok_hp then
   vim.keymap.set("n", "<leader>h2", function() hp:list():select(2) end,                    { desc = "Arquivo 2" })
   vim.keymap.set("n", "<leader>h3", function() hp:list():select(3) end,                    { desc = "Arquivo 3" })
   vim.keymap.set("n", "<leader>h4", function() hp:list():select(4) end,                    { desc = "Arquivo 4" })
+end
+
+-- Neotest
+local ok_nt, nt = pcall(require, "neotest")
+if ok_nt then
+  vim.keymap.set("n", "<leader>tr", function() nt.run.run() end,                        { desc = "Run (próximo)" })
+  vim.keymap.set("n", "<leader>tf", function() nt.run.run(vim.fn.expand("%")) end,      { desc = "Run arquivo" })
+  vim.keymap.set("n", "<leader>ts", function() nt.run.stop() end,                       { desc = "Stop" })
+  vim.keymap.set("n", "<leader>ta", function() nt.run.attach() end,                     { desc = "Attach" })
+  vim.keymap.set("n", "<leader>to", function() nt.output.open({ enter = true }) end,    { desc = "Output" })
+  vim.keymap.set("n", "<leader>tp", function() nt.output_panel.toggle() end,            { desc = "Painel" })
+  vim.keymap.set("n", "<leader>tm", function() nt.summary.toggle() end,                 { desc = "Summary" })
+  vim.keymap.set("n", "[t",         function() nt.jump.prev({ status = "failed" }) end, { desc = "Teste falho anterior" })
+  vim.keymap.set("n", "]t",         function() nt.jump.next({ status = "failed" }) end, { desc = "Próximo teste falho" })
 end
 
 -- Buffers

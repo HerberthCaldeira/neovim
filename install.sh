@@ -55,6 +55,16 @@ clone "nvim-tree/nvim-web-devicons"
 clone "MeanderingProgrammer/render-markdown.nvim"
 clone "abidibo/nvim-httpyac"
 
+# Neotest + adapters
+clone "nvim-neotest/nvim-nio"
+clone "nvim-neotest/neotest"
+clone "nvim-neotest/neotest-go"
+clone "nvim-neotest/neotest-plenary"
+clone "nvim-neotest/neotest-jest"
+clone "marilari88/neotest-vitest"
+clone "olimorris/neotest-phpunit"
+clone "V13Axel/neotest-pest"
+
 echo ""
 echo "Plugins instalados em $PACK_DIR"
 echo "Abra o nvim e rode :helptags ALL"

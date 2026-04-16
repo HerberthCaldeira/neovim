@@ -20,6 +20,9 @@ opt.smartcase  = true
 opt.hlsearch   = false
 opt.incsearch  = true
 
+-- Config local por projeto (.nvim.lua na raiz)
+opt.exrc = true
+
 -- Comportamento
 opt.wrap        = false
 opt.splitright  = true

@@ -1,5 +1,8 @@
 require("options")
 
+-- nvim-treesitter precisa que o diretório de parsers esteja no runtimepath
+vim.opt.runtimepath:append(vim.fn.stdpath("data") .. "/site")
+
 require("tokyonight").setup({
   style       = "night",
   transparent = true,
@@ -19,4 +22,5 @@ require("plugins.gitsigns")
 require("plugins.lualine")
 require("plugins.render-markdown")
 require("plugins.httpyac")
+require("plugins.neotest")
 require("keymaps")
