@@ -32,7 +32,9 @@ end
 -- Go (usa Delve — instalar com: go install github.com/go-delve/delve/cmd/dlv@latest)
 local ok_go, dapgo = pcall(require, "dap-go")
 if ok_go then
-  dapgo.setup()
+  dapgo.setup({
+    delve = { output_mode = "local" },
+  })
 end
 
 -- PHP via Xdebug

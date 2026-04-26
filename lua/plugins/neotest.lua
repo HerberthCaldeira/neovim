@@ -63,4 +63,22 @@ neotest.setup({
   output_panel = { enabled = true, open = "botright split | resize 15" },
   summary      = { animated = true },
   status       = { enabled = true, virtual_text = true, signs = true },
+  floating     = { border = "rounded", max_height = 0.7, max_width = 0.7 },
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "neotest-output",
+  callback = function()
+    vim.wo.signcolumn  = "yes:2"
+    vim.wo.scrolloff   = 3
+    vim.wo.wrap        = true
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "neotest-output-panel",
+  callback = function()
+    vim.api.nvim_set_hl(0, "NeotestPanelNormal", { bg = "#13141f" })
+    vim.wo.winhighlight = "Normal:NeotestPanelNormal"
+  end,
 })

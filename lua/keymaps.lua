@@ -127,12 +127,19 @@ if ok_dap then
       " <leader>bq  Terminar sessão",
       " <leader>bv  Toggle painel",
       "─────────────────────────────────────",
+      "  Go — debug  ",
+      "─────────────────────────────────────",
+      " F5 → escolha item 4 (Debug Package)",
+      " <leader>bb  Marque o breakpoint",
+      " <leader>td  Rode o teste com debug",
+      "             (cursor dentro do Test)",
+      "─────────────────────────────────────",
       "  q / <Esc>  Fechar",
     }
     local buf = vim.api.nvim_create_buf(false, true)
     vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
     vim.bo[buf].modifiable = false
-    local width = 39
+    local width = 41
     local height = #lines
     local win = vim.api.nvim_open_win(buf, true, {
       relative = "editor",
@@ -156,6 +163,7 @@ end
 local ok_nt, nt = pcall(require, "neotest")
 if ok_nt then
   vim.keymap.set("n", "<leader>tr", function() nt.run.run() end,                   { desc = "Run (próximo)" })
+  vim.keymap.set("n", "<leader>td", function() nt.run.run({ strategy = "dap" }) end, { desc = "Debug (próximo)" })
   vim.keymap.set("n", "<leader>tf", function() nt.run.run(vim.fn.expand("%")) end, { desc = "Run arquivo" })
   vim.keymap.set("n", "<leader>ts", function() nt.run.stop() end,                       { desc = "Stop" })
   vim.keymap.set("n", "<leader>ta", function() nt.run.attach() end,                     { desc = "Attach" })
