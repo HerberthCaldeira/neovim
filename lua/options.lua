@@ -7,6 +7,9 @@ opt.termguicolors  = true
 opt.signcolumn     = "yes"
 opt.cursorline     = true
 opt.scrolloff      = 8
+opt.laststatus     = 3
+opt.showtabline    = 0
+opt.showmode       = false
 
 -- Indentação
 opt.tabstop     = 4

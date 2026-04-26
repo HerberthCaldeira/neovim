@@ -24,7 +24,6 @@ neotest.setup({
   adapters = {
     -- Go
     require("neotest-go")({
-      experimental = { test_table = true },
       args = { "-v", "-count=1" },
     }),
 
@@ -60,6 +59,8 @@ neotest.setup({
     }),
   },
 
-  output = { open_on_run = true },
-  summary = { animated = true },
+  output       = { open_on_run = false },
+  output_panel = { enabled = true, open = "botright split | resize 15" },
+  summary      = { animated = true },
+  status       = { enabled = true, virtual_text = true, signs = true },
 })

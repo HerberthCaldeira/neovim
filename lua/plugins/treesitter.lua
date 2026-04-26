@@ -3,6 +3,7 @@ if not ok then return end
 
 configs.setup({
   ensure_installed = { "go", "bash", "lua", "vim", "vimdoc", "php", "javascript", "typescript", "tsx" },
+  sync_install     = true,
   highlight        = { enable = true },
   indent           = { enable = true },
 })

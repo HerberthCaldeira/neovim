@@ -12,6 +12,7 @@ if ok_wk then
     { "<leader>g", group = "Git" },
     { "<leader>r", group = "HTTP" },
     { "<leader>t", group = "Testes" },
+    { "<leader>T", group = "Terminal" },
   })
 end
 
@@ -154,8 +155,8 @@ end
 -- Neotest
 local ok_nt, nt = pcall(require, "neotest")
 if ok_nt then
-  vim.keymap.set("n", "<leader>tr", function() nt.run.run() end,                        { desc = "Run (próximo)" })
-  vim.keymap.set("n", "<leader>tf", function() nt.run.run(vim.fn.expand("%")) end,      { desc = "Run arquivo" })
+  vim.keymap.set("n", "<leader>tr", function() nt.run.run() end,                   { desc = "Run (próximo)" })
+  vim.keymap.set("n", "<leader>tf", function() nt.run.run(vim.fn.expand("%")) end, { desc = "Run arquivo" })
   vim.keymap.set("n", "<leader>ts", function() nt.run.stop() end,                       { desc = "Stop" })
   vim.keymap.set("n", "<leader>ta", function() nt.run.attach() end,                     { desc = "Attach" })
   vim.keymap.set("n", "<leader>to", function() nt.output.open({ enter = true }) end,    { desc = "Output" })
@@ -163,6 +164,25 @@ if ok_nt then
   vim.keymap.set("n", "<leader>tm", function() nt.summary.toggle() end,                 { desc = "Summary" })
   vim.keymap.set("n", "[t",         function() nt.jump.prev({ status = "failed" }) end, { desc = "Teste falho anterior" })
   vim.keymap.set("n", "]t",         function() nt.jump.next({ status = "failed" }) end, { desc = "Próximo teste falho" })
+end
+
+-- Oil
+local ok_oil = pcall(require, "oil")
+if ok_oil then
+  vim.keymap.set("n", "-",          "<cmd>Oil<cr>",                              { desc = "Oil: abrir diretório" })
+  vim.keymap.set("n", "<leader>e",  function() require("oil").open_float() end,  { desc = "Oil: flutuante" })
+end
+
+-- Terminal
+local ok_tt, tt = pcall(require, "toggleterm.terminal")
+if ok_tt then
+  local float_term = tt.Terminal:new({ direction = "float" })
+  local vert_term  = tt.Terminal:new({ direction = "vertical", size = 60 })
+
+  vim.keymap.set("n", "<leader>Tt", "<cmd>ToggleTerm<cr>",                        { desc = "Toggle terminal" })
+  vim.keymap.set("n", "<leader>Tf", function() float_term:toggle() end,           { desc = "Terminal flutuante" })
+  vim.keymap.set("n", "<leader>Tv", function() vert_term:toggle() end,            { desc = "Terminal vertical" })
+  vim.keymap.set("t", "<Esc>",      [[<C-\><C-n>]],                               { desc = "Sair do modo terminal" })
 end
 
 -- Buffers
