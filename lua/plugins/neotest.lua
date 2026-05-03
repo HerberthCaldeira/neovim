@@ -1,23 +1,28 @@
 local ok, neotest = pcall(require, "neotest")
 if not ok then return end
 
--- Prefixo docker: definido em .nvim.lua do projeto via vim.g.neotest_docker_service
+-- Container docker: definido em .nvim.lua do projeto via vim.g.neotest_docker_service
+-- Usa o nome do container (não o serviço do compose), ex: "laravel.test-1"
 -- Exemplo no .nvim.lua do projeto:
---   vim.g.neotest_docker_service = "app"
+--   vim.g.neotest_docker_service = "laravel.test-1"
+
+-- Retorna string — para adapters que montam o comando via shell (jest, vitest)
 local function docker(cmd)
-  local service = vim.g.neotest_docker_service
-  if not service or service == "" then return cmd end
+  local container = vim.g.neotest_docker_service
+  if not container or container == "" then return cmd end
+  return "docker exec " .. container .. " " .. cmd
+end
 
-  local has_compose =
-    vim.fn.filereadable("docker-compose.yml") == 1 or
-    vim.fn.filereadable("docker-compose.yaml") == 1 or
-    vim.fn.filereadable("compose.yml") == 1 or
-    vim.fn.filereadable("compose.yaml") == 1
-
-  if has_compose then
-    return "docker compose exec " .. service .. " " .. cmd
+-- Retorna tabela — para adapters que passam argv direto ao jobstart (phpunit, pest)
+local function docker_argv(...)
+  local container = vim.g.neotest_docker_service
+  local args = { ... }
+  if container and container ~= "" then
+    local result = { "docker", "exec", container }
+    for _, v in ipairs(args) do result[#result + 1] = v end
+    return result
   end
-  return cmd
+  return args
 end
 
 neotest.setup({
@@ -48,14 +53,16 @@ neotest.setup({
       vitestCommand = function() return docker("npx vitest") end,
     }),
 
-    -- PHPUnit
-    require("neotest-phpunit")({
-      phpunit_cmd = function() return docker("./vendor/bin/phpunit") end,
+    -- Pest (PHP) — deve vir antes do phpunit para ter prioridade
+    -- Sail é auto-detectado via vendor/bin/sail; quando ativo, results_path
+    -- vai para storage/app/ (dentro do projeto, acessível do host via mount).
+    require("neotest-pest")({
+      sail_project_path = "/var/www/html",
     }),
 
-    -- Pest (PHP)
-    require("neotest-pest")({
-      pest_cmd = function() return docker("./vendor/bin/pest") end,
+    -- PHPUnit
+    require("neotest-phpunit")({
+      phpunit_cmd = function() return docker_argv("./vendor/bin/phpunit") end,
     }),
   },
 
